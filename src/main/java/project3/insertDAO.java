@@ -42,7 +42,7 @@ public class insertDAO {
 
 			con = DriverManager.getConnection(
 
-					"jdbc:mariadb://172.17.206.39:3306/userdb", "user", "1234");
+					"jdbc:mariadb://172.17.206.42:3306/userdb", "user", "1234");
 
 			stmt = (Statement)con.createStatement();
 

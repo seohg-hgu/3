@@ -17,6 +17,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -35,7 +37,7 @@ import javax.swing.JOptionPane;
 public class Main extends Frame implements ActionListener,ItemListener, Runnable {
 
 	DTO dto = new DTO();// DTO 객체 생성
-	
+	public static final String pattern1 = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*?,./\\\\<>|_-[+]=\\`~\\(\\)\\[\\]\\{\\}])[A-Za-z[0-9]!@#$%^&*?,./\\\\<>|_-[+]=\\`~\\(\\)\\[\\]\\{\\}]{8,20}$";
 	String MODE="DEFAULT";
 	
 	JPanel p1 = new JPanel();
@@ -53,6 +55,7 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 	JFrame infopage;
 	boolean check;
 	boolean sameCheck=false;
+	boolean pwCheck=false;
 	TextField name; //이름 
 	TextField id; // 아이디: 중복확인
 	JPasswordField pw; // 비밀번호 : 조건 설정
@@ -204,9 +207,21 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 						if(PW.equals(receivedPW)) {
 							//로그인 된 화면 출력
 							if(!ID.equals("admin")) {
+								try {
+									searchDAO.searchAll();
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
 								JOptionPane.showMessageDialog(null, "로그인되었습니다.", "", JOptionPane.INFORMATION_MESSAGE);
 								infoPanel(ID);
 							}else {
+								try {
+									searchDAO.searchAll();
+								} catch (Exception e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
 								adminPanel();
 							}
 								
@@ -254,8 +269,10 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 		Id.setBounds(50, 170, 50,50);
 		JLabel Pw1 = new JLabel("PW ");
 		Pw1.setBounds(50, 230, 50,50);
-		JLabel Pw2 = new JLabel("PdW check");
+		JLabel Pw2 = new JLabel("PW check");
 		Pw2.setBounds(50, 290, 50,50);
+		JLabel Pww = new JLabel("숫자, 문자 , 특수문자 포함 8-20자");
+		Pww.setBounds(120, 340, 200,10);
 		JLabel Phone = new JLabel("전화번호");
 		Phone.setBounds(50, 350, 50,50);
 		
@@ -315,6 +332,7 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 		p2.add(pw);
 		p2.add(Pw2);
 		p2.add(pw2);
+		p2.add(Pww);
 		p2.add(Phone);
 		p2.add(phone1);
 		p2.add(phone2);
@@ -382,6 +400,7 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 					String p1,p2;
 					System.out.println("HI");
 					check=false;
+					pwCheck=false;
 					dto.setName(name.getText());
 					if(r1.isSelected()) {
 						b="MALE";
@@ -398,20 +417,26 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 					if(p1.equals(p2)) {
 						check=true;
 					}
+					Matcher match = Pattern.compile(pattern1).matcher(p1);
+
+					if(match.find()) {
+						pwCheck = true;
+					}
 					temp=phonelist[phone1.getSelectedIndex()]+"-"+phone2.getText()+"-"+phone3.getText();
 					dto.setPhone(temp);
 					//dto.setInfo(in_info.getText()); // 입력된 자기소개를 가져와 dto에 저장
 					//dto.setJob(list.getSelectedItem()); // 입력된 직업을 가져와 dto에 저장
 					try {
-						if(check==true&&sameCheck==false) {
+						if(check==true&&sameCheck==false&&pwCheck==true) {
 							System.out.println("true");
 							insertDAO.create(dto); // dto를 DAO에 넘겨준다.
 							JOptionPane.showMessageDialog(null, "가입되었습니다.", "", JOptionPane.INFORMATION_MESSAGE);	
 							System.out.println("true");
 							check=false;
+							pwCheck=false;
 							sameCheck=true;
 							receivedID=null;
-						}else if(check==false){
+						}else if(check==false||pwCheck==false){
 							JOptionPane.showMessageDialog(null, "비밀번호를 확인하세요", "Warning", JOptionPane.INFORMATION_MESSAGE);
 						}else if(sameCheck==true){
 							JOptionPane.showMessageDialog(null, "ID를 확인하세요", "Warning", JOptionPane.INFORMATION_MESSAGE);

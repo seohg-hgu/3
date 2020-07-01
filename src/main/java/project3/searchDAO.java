@@ -8,15 +8,10 @@ import java.sql.Statement;
 
 public class searchDAO {
 	public static void searchpw(String id) throws Exception {
-		//DB 종료에 따른 JDBC DRIVER 클래스 
 		Class.forName("org.mariadb.jdbc.Driver"); 
-		//DB접속 url 
 		String url = "jdbc:mariadb://172.17.206.42:3306/userdb"; 
-		//DB접속 ID 
 		String userid = "user"; 
-		//DB접속 패스워드 
 		String userpw = "1234"; 
-		//접속정보로 JDBC 연결 커넥션 생성 
 		Connection conn = DriverManager.getConnection(url,userid,userpw); 
 		String table="guest";
 		Statement stmt = null;
@@ -44,15 +39,10 @@ public class searchDAO {
         }
 	}
 	public static void search(String id) throws Exception {
-		//DB 종료에 따른 JDBC DRIVER 클래스 
 		Class.forName("org.mariadb.jdbc.Driver"); 
-		//DB접속 url 
 		String url = "jdbc:mariadb://172.17.206.42:3306/userdb"; 
-		//DB접속 ID 
 		String userid = "user"; 
-		//DB접속 패스워드 
 		String userpw = "1234"; 
-		//접속정보로 JDBC 연결 커넥션 생성 
 		Connection conn = DriverManager.getConnection(url,userid,userpw); 
 		String table="guest";
 		Statement stmt = null;
@@ -78,15 +68,10 @@ public class searchDAO {
         }
 	}
 	public static void searchAll() throws Exception {
-		//DB 종료에 따른 JDBC DRIVER 클래스 
 		Class.forName("org.mariadb.jdbc.Driver"); 
-		//DB접속 url 
 		String url = "jdbc:mariadb://172.17.206.42:3306/userdb"; 
-		//DB접속 ID 
 		String userid = "user"; 
-		//DB접속 패스워드 
 		String userpw = "1234"; 
-		//접속정보로 JDBC 연결 커넥션 생성 
 		Connection conn = DriverManager.getConnection(url,userid,userpw); 
 		String table="guest";
 		Statement stmt = null;
@@ -109,6 +94,7 @@ public class searchDAO {
 	        	Main.content[i][3]=rs.getString("password");
 	        	Main.content[i][4]=rs.getString("phone");
 	        	i++;
+	        	Main.n=i;
             }
             
         } catch (SQLException e) {

@@ -21,9 +21,6 @@ public class insertDAO {
 		String phone= dto.getPhone();
 		String password;
 
-		//String job = dto.getJob();
-		//String info = dto.getInfo();
-
 		String sql = "INSERT INTO guest(name, sex, id, password, phone) VALUES";
 
 		try {

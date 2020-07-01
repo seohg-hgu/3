@@ -7,10 +7,6 @@ public class DTO {
 	String id;
 	char[] pw;
 	String phone;
-	
-
-	//String job;
-	//String info;
 
 	public String getName() {
 
@@ -70,29 +66,5 @@ public class DTO {
 		this.phone = phone;
 
 	}
-/*
-	public String getJob() {
 
-		return job;
-
-	}
-
-	public void setJob(String job) {
-
-		this.job = job;
-
-	}
-
-	public String getInfo() {
-
-		return info;
-
-	}
-
-	public void setInfo(String info) {
-
-		this.info = info;
-
-	}
-*/
 }

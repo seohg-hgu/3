@@ -39,7 +39,7 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 	DTO dto = new DTO();// DTO 객체 생성
 	public static final String pattern1 = "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*?,./\\\\<>|_-[+]=\\`~\\(\\)\\[\\]\\{\\}])[A-Za-z[0-9]!@#$%^&*?,./\\\\<>|_-[+]=\\`~\\(\\)\\[\\]\\{\\}]{8,20}$";
 	String MODE="DEFAULT";
-	
+	static int n;
 	JPanel p1 = new JPanel();
 	JPanel p2 = new JPanel();
 	
@@ -104,8 +104,6 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 	String tp2;
 	String tp3;
 	
-	
-	
 	//탈퇴
 	JPasswordField qpw; // 비밀번호 : 조건 설정
 	JButton qquit; //탈퇴
@@ -120,20 +118,10 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 	JTable table;
 	
 	JLabel txt;
-	JButton add, del,adlogout;
+	JButton add, del,adlogout,refresh;
 	TextField aname, asex, aid, apassword, aphone;
 	int index;
 
-	//강제 탈퇴
-	TextArea in_info; // 자기소개
-	
-	//개인정보 수정 
-	
-	//delete Account : 비밀번호 입력받아 확인 후 삭제
-	
-	
-
-	//String job = ""; // 직업
 
 	public Main(String str) {
 		super(str);
@@ -143,7 +131,6 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 		super.setVisible(true); // 실제로 프레임을 화면에 출력
 		super.setSize(480, 720); // 프레임의 처음 크기
 		super.setResizable(true); // 프레임 사이즈 조절
-		
 		this.add(p1);
 		
 		p1.setVisible(true);
@@ -339,16 +326,9 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 		p2.add(phone3);
 		p2.add(submit);
 		p2.add(back);
-		//p2.add(name);
-		//p1.add(Pw2);
-		//p1.add(logIn_pw);
-		//p1.add(logIn);
-		//p1.add(join);
+		
 		joinpage.add(p2);
 		
-		//add("Center", p);
-		//add("South", logIn);
-		//add("South", join);
 		joinpage.setVisible(true);
 		sameId.addActionListener(new ActionListener() {
 			@Override
@@ -613,10 +593,10 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 		phone3.setBounds(290,350,70,50);
 		phone3.setText(tp3);
 		
-		revise=new JButton("revise");
+		revise=new JButton("수정");
 		revise.setBounds(30,450,150,50);
 		
-		logout=new JButton("logout");
+		logout=new JButton("로그아웃");
 		logout.setBounds(200,450,150,50);
 		
 		
@@ -770,9 +750,13 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 		
 		adlogout = new JButton("logout");
 		adlogout.setText("logout");
-		adlogout.setBounds(250, 130, 100, 30);
+		adlogout.setBounds(250, 170, 100, 30);
 		pp1.add(adlogout);
 	
+		refresh = new JButton("수정");
+		refresh.setText("수정");
+		refresh.setBounds(250, 130, 100, 30);
+		pp1.add(refresh);
 
 		try {
 			searchDAO.searchAll();
@@ -895,6 +879,45 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 			}	
 		});
 		
+		refresh.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub	
+				if(e.getSource()==refresh) {
+					try {
+						//searchDAO.searchAll();
+						
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+
+					}
+					
+					for(int i=0;i<n;i++) {
+						dto.setName((String) table.getValueAt(i, 0));//이름
+						
+						dto.setS((String) table.getValueAt(i, 1));//성별
+						dto.setId((String) table.getValueAt(i, 2)); // id
+				
+						char[] arr= ((String) table.getValueAt(i, 3)).toCharArray();
+						System.out.println(arr);
+						dto.setPassword(arr);// pw
+						dto.setPhone((String) table.getValueAt(i,4));
+						
+						try {
+							updateDAO.update(dto);
+							
+							
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+
+						}
+					}
+				}
+			}	
+		});
+		
 	}
 
 	
@@ -905,43 +928,26 @@ public class Main extends Frame implements ActionListener,ItemListener, Runnable
 
 	}
 
-	public void run() { // 스레드 정의부분
 
-	}
-
-	public void itemStateChanged(ItemEvent e) { // 체크상태 확인
-
-	}
-
-	public void actionPerformed(ActionEvent e) { // 액션이벤트
-
-		Object obj = e.getSource();
-
-
-
-		if ((JButton) obj == logIn) {
-/*
-			dto.setId(logIn_id.getText()); // 입력된 아이디를 가져와 dto에 저장
-			dto.setPassword(logIn_pw.getPassword()); // 입력된 비밀번호를 가져와 dto에 저장
-
-			//dto.setInfo(in_info.getText()); // 입력된 자기소개를 가져와 dto에 저장
-			//dto.setJob(list.getSelectedItem()); // 입력된 직업을 가져와 dto에 저장
-			try {
-				insertDAO.create(dto); // dto를 DAO에 넘겨준다.
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-
-			}
-*/
-		}if ((JButton) obj == submit) {
-			
-
-		}
-
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 
-	
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
